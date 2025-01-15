@@ -15,7 +15,7 @@ export default function Search() {
       params.set("search", "manchester");
       router.push(`?${params.toString()}`);
     }
-  }, []); 
+  }, [router, searchParams]); 
 
 
 

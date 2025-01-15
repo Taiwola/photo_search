@@ -8,7 +8,6 @@ type Photo = {
   breadcrumbs: string[]; // Assuming it's an array of strings
   color: string;
   created_at: string; // ISO date string
-  current_user_collections: any[]; // Specify a more specific type if known
   description: string | null;
   height: number;
   id: string;
