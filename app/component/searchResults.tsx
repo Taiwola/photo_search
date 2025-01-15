@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchRandomResults, fetchSearchResults } from "../api";
@@ -6,20 +7,17 @@ import Card from "./card";
 export default function SearchResults({ term }: { term: string }) {
   const [result, setResults] = useState<Photo[]>([]);
 
-  const { data, isLoading, isError, refetch } = useQuery(
+  const { isError, refetch } = useQuery(
     ["searchResults", term],
     () => fetchSearchResults(term),
     {
       enabled: !!term,
-      suspense: true, 
+      suspense: true,
+      onSuccess: async (data) => {
+        setResults(data.results);
+      },
     }
   );
-
-  useEffect(() => {
-    setResults(data.results); 
-  }, [data])
-
-  console.log(data.results);
 
   const handleClicked = async () => {
     try {
@@ -36,16 +34,10 @@ export default function SearchResults({ term }: { term: string }) {
     }
   }, [term, refetch]);
 
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <span className="text-gray-500">Loading...</span>
-      </div>
-    );
-  }
-
- 
   if (isError) {
     return (
       <div className="flex justify-center items-center h-96">
@@ -70,12 +62,14 @@ export default function SearchResults({ term }: { term: string }) {
         ))}
       </div>
       <div className="flex justify-center items-center mt-8">
-        <button
-          className="rounded-md text-sm font-semibold shadow-sm text-black bg-white border px-3 py-2 hover:bg-gray-500"
-          onClick={handleClicked}
-        >
-          Load More
-        </button>
+        {result.length && (
+          <button
+            className="rounded-md text-sm font-semibold shadow-sm text-black bg-white border px-3 py-2 hover:bg-gray-500"
+            onClick={handleClicked}
+          >
+            Load More
+          </button>
+        )}
       </div>
     </>
   );

@@ -1,23 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Search() {
-  const [term, setTerm] = useState<string>(""); 
+  const [term, setTerm] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const termFromUrl = searchParams.get("search");
-    if (!termFromUrl) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("search", "manchester");
-      router.push(`?${params.toString()}`);
-    }
-  }, [router, searchParams]); 
+  const termFromUrl = searchParams.get("search");
 
-
+  if (!termFromUrl) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("search", "manchester");
+    router.push(`?${params.toString()}`);
+  }
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +40,12 @@ export default function Search() {
             onChange={(e) => setTerm(e.target.value)}
           />
 
-          <button type="submit" className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 flex-shrink-0">Search</button>
+          <button
+            type="submit"
+            className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 flex-shrink-0"
+          >
+            Search
+          </button>
         </div>
       </form>
     </div>
