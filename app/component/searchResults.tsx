@@ -34,10 +34,6 @@ export default function SearchResults({ term }: { term: string }) {
     }
   }, [term, refetch]);
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
-
   if (isError) {
     return (
       <div className="flex justify-center items-center h-96">
